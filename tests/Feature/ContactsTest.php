@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Contact;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,33 +38,55 @@ class ContactsTest extends TestCase
                 
    }
 
-   /** @test */
+      /**  @test */
 
-   public function a_name_is_required()
+
+   public function fields_are_required()
    {
-    
-    $response =  $this->post('/api/contacts',
-                        ['email' => 'email@me.com' ,
-                        'birthday' => '05/10/2019' ,
-                        'company' => 'ABC COMPANY']
-                    );
-        $response->assertSessionHasErrors('name') ;
-        
+    collect(['name' , 'email' , 'birthday','company'])
+
+    ->each(function($field){
+
+        $response = $this->post('/api/contacts' , array_merge($this->data() , [$field => '']));
+
+        $response->assertSessionHasErrors($field);
+
         $this->assertCount(0 , Contact::all());
+
+    }); 
+}
+   /**  @test */
+   public function email_must_be_a_valid_email()
+   {
+       
+    $response = $this->post('/api/contacts' , array_merge(  $this->data(),['email' => 'not an email']));
+
+    $response->assertSessionHasErrors('email');
+
+    $this->assertCount(0 , Contact::all());
+
    }
 
-      /** @test */
+     /**  @test */
+     public function birthdays_are_properly_stored()
+     {
+        $response = $this->post('/api/contacts' ,   $this->data() );
 
-      public function a_email_is_required()
-      {
-       
-       $response =  $this->post('/api/contacts',
-                           ['name' =>  'Test Name' ,
-                           'birthday' => '05/10/2019' ,
-                           'company' => 'ABC COMPANY']
-                       );
-           $response->assertSessionHasErrors('email') ;
-           
-           $this->assertCount(0 , Contact::all());
-      }
+        $this->assertCount(1 , Contact::all());
+
+        $this->assertInstanceOf(Carbon::class , Contact::first()->birthday);
+
+        $this->assertEquals('05-10-2019' , Contact::first()->birthday->format('m-d-Y') );
+
+     }
+
+   private function data()
+   {
+       return   
+            ['name' => 'Test Name',
+            'email' => 'email@me.com' ,
+            'birthday' => '05/10/2019' ,
+            'company' => 'ABC COMPANY'];
+   }
+
 }
