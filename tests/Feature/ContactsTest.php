@@ -31,10 +31,9 @@ class ContactsTest extends TestCase
 
         $this->assertEquals('email@me.com' , $contact->email);
 
-        $this->assertEquals('05/10/2019' , $contact->birthday);
+        $this->assertEquals('05/10/2019' , $contact->birthday->format('m/d/Y'));
 
         $this->assertEquals('ABC COMPANY' , $contact->company);
-
                 
    }
 
@@ -68,8 +67,10 @@ class ContactsTest extends TestCase
    }
 
      /**  @test */
+
      public function birthdays_are_properly_stored()
      {
+
         $response = $this->post('/api/contacts' ,   $this->data() );
 
         $this->assertCount(1 , Contact::all());
@@ -79,7 +80,9 @@ class ContactsTest extends TestCase
         $this->assertEquals('05-10-2019' , Contact::first()->birthday->format('m-d-Y') );
 
      }
+
      /** @test */
+
     public function a_contact_can_be_retrieved()
     {
         $contact = factory(Contact::class)->create();
@@ -90,9 +93,30 @@ class ContactsTest extends TestCase
             'name'       => $contact->name ,
             'email'      => $contact->email,
             'birthday'   => $contact->birthday ,
-            'company'    => $contact->company
+            'company'    => $contact->company,
         ]);
     }
+    /** @test */
+
+    public function a_contact_can_be_patched()
+    {
+
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->patch('/api/contacts/'.$contact->id , $this->data() );
+
+        $contact = $contact->fresh();
+
+        $this->assertEquals('Test Name' , $contact->name);
+
+        $this->assertEquals('email@me.com' , $contact->email);
+
+        $this->assertEquals('05/10/2019' , $contact->birthday->format('m/d/Y'));
+
+        $this->assertEquals('ABC COMPANY' , $contact->company);
+
+    }
+
    private function data()
    {
        return   
