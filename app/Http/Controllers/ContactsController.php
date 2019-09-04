@@ -21,6 +21,12 @@ class ContactsController extends Controller
     {
         return $contact->update($this->validateData());
     }
+
+    public function destroy(Contact $contact)
+    {
+        return $contact->delete();
+    }
+    
     private function validateData()
     {
         return request()->validate([
@@ -30,4 +36,6 @@ class ContactsController extends Controller
             'company'     => 'required',
         ]);
     }
+
+
 }

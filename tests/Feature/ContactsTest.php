@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Contact;
+use App\User;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,18 +14,36 @@ class ContactsTest extends TestCase
 
     use RefreshDatabase;
 
+    protected $user ; 
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = factory(User::class)->create();
+
+    } 
+
+    /** @test  */
+    public function an_unauthenticated_user_shoud_redirect_to_login()
+    {
+
+        $response = $this->post('/api/contacts' ,array_merge( $this->data(), ['api_token' => '' ] ) );
+
+        $response->assertRedirect('/login');
+
+        $this->assertCount(0 , Contact::all() );
+
+    }
+
    /**  @test */
 
    public function a_contact_can_be_added()
    {
        $this->withoutExceptionHandling();
 
-        $this->post('/api/contacts',
-                        ['name' => 'Test Name',
-                        'email' => 'email@me.com' ,
-                        'birthday' => '05/10/2019' ,
-                        'company' => 'ABC COMPANY']
-                    );
+        $this->post('/api/contacts',$this->data());
+        
         $contact = Contact::first();            
 
         $this->assertEquals('Test Name' , $contact->name);
@@ -37,23 +56,23 @@ class ContactsTest extends TestCase
                 
    }
 
-      /**  @test */
-
+    /**  @test */
 
    public function fields_are_required()
    {
-    collect(['name' , 'email' , 'birthday','company'])
+        collect(['name' , 'email' , 'birthday','company'])
 
-    ->each(function($field){
+        ->each(function($field){
 
-        $response = $this->post('/api/contacts' , array_merge($this->data() , [$field => '']));
+            $response = $this->post('/api/contacts' , array_merge($this->data() , [$field => '']));
 
-        $response->assertSessionHasErrors($field);
+            $response->assertSessionHasErrors($field);
 
-        $this->assertCount(0 , Contact::all());
+            $this->assertCount(0 , Contact::all());
 
-    }); 
-}
+        }); 
+    }
+
    /**  @test */
    public function email_must_be_a_valid_email()
    {
@@ -87,7 +106,7 @@ class ContactsTest extends TestCase
     {
         $contact = factory(Contact::class)->create();
         
-        $response = $this->get('/api/contacts/'.$contact->id);
+        $response = $this->get('/api/contacts/'.$contact->id.'?api_token='.$this->user->api_token);
         
         $response->assertJson([
             'name'       => $contact->name ,
@@ -116,6 +135,15 @@ class ContactsTest extends TestCase
         $this->assertEquals('ABC COMPANY' , $contact->company);
 
     }
+    /** @test  */
+    public function a_contact_can_be_deleted()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->delete('api/contacts/'.$contact->id , ['api_token' => $this->user->api_token]);
+
+        $this->assertCount(0 , Contact::all() );
+    }
 
    private function data()
    {
@@ -123,8 +151,9 @@ class ContactsTest extends TestCase
             ['name' => 'Test Name',
             'email' => 'email@me.com' ,
             'birthday' => '05/10/2019' ,
-            'company' => 'ABC COMPANY']
-            ;
+            'company' => 'ABC COMPANY',
+            'api_token' => $this->user->api_token
+            ];
    }
 
 }
