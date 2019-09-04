@@ -79,14 +79,28 @@ class ContactsTest extends TestCase
         $this->assertEquals('05-10-2019' , Contact::first()->birthday->format('m-d-Y') );
 
      }
-
+     /** @test */
+    public function a_contact_can_be_retrieved()
+    {
+        $contact = factory(Contact::class)->create();
+        
+        $response = $this->get('/api/contacts/'.$contact->id);
+        
+        $response->assertJson([
+            'name'       => $contact->name ,
+            'email'      => $contact->email,
+            'birthday'   => $contact->birthday ,
+            'company'    => $contact->company
+        ]);
+    }
    private function data()
    {
        return   
             ['name' => 'Test Name',
             'email' => 'email@me.com' ,
             'birthday' => '05/10/2019' ,
-            'company' => 'ABC COMPANY'];
+            'company' => 'ABC COMPANY']
+            ;
    }
 
 }

@@ -23,4 +23,9 @@ class ContactsController extends Controller
             'company'   => request('company'),
         ]);
     }
+
+    public function show(Contact $contact)
+    {
+        return $contact;
+    }
 }
