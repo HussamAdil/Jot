@@ -9,31 +9,36 @@ class ContactsController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny' , Contact::class); 
+
         return request()->user()->contacts; 
     }
 
     public function store()
     { 
-        Contact::create($this->validateData());
+        $this->authorize('create' , Contact::class); 
+
+       request()->user()->contacts()->create($this->validateData());
     }
 
     public function show(Contact $contact)
     {
-         
-        if(request()->user()->isNot($contact->user))
-        {
-            return response([],403);
-        }
+        $this->authorize('view' , $contact); 
+ 
         return $contact;
     }
 
     public function update(Contact $contact)
     {
+        $this->authorize('update' , $contact); 
+
         return $contact->update($this->validateData());
     }
 
     public function destroy(Contact $contact)
     {
+        $this->authorize('delete' , $contact); 
+
         return $contact->delete();
     }
 
