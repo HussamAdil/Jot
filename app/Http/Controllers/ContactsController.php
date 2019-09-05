@@ -19,6 +19,11 @@ class ContactsController extends Controller
 
     public function show(Contact $contact)
     {
+         
+        if(request()->user()->isNot($contact->user))
+        {
+            return response([],403);
+        }
         return $contact;
     }
 
