@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response;
 
 class ContactsTest extends TestCase
 {
@@ -65,7 +66,7 @@ class ContactsTest extends TestCase
    {
        $this->withoutExceptionHandling();
 
-        $this->post('/api/contacts',$this->data());
+       $response = $this->post('/api/contacts',$this->data());
 
         $contact = Contact::first();            
 
@@ -76,7 +77,21 @@ class ContactsTest extends TestCase
         $this->assertEquals('05/10/2019' , $contact->birthday->format('m/d/Y'));
 
         $this->assertEquals('ABC COMPANY' , $contact->company);
-                
+        
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $response->assertJson([
+
+            'data' =>
+            [
+                'contact_id' => $contact->id
+            ],
+            'links' =>
+            [
+                'self'=> url('/contacts/'.$contact->id),
+            ]
+
+        ]);
    }
 
     /**  @test */
