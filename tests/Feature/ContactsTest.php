@@ -26,6 +26,7 @@ class ContactsTest extends TestCase
     } 
 
     /** @test  */
+    
     public function an_unauthenticated_user_shoud_redirect_to_login()
     {
 
@@ -53,9 +54,14 @@ class ContactsTest extends TestCase
 
         $response->assertJsonCount(1)
         ->assertJson([
-            "data" => 
-            [
-                ['contact_id' => $contact->id]
+
+            'data' => [
+                [
+                    "data" => [
+                        'contact_id' => $contact->id
+                    ]
+                ]
+                
             ]
         ]);
     }
@@ -88,7 +94,7 @@ class ContactsTest extends TestCase
             ],
             'links' =>
             [
-                'self'=> url('/contacts/'.$contact->id),
+                'self'=>$contact->path(),
             ]
 
         ]);
@@ -192,6 +198,21 @@ class ContactsTest extends TestCase
 
         $this->assertEquals('ABC COMPANY' , $contact->company);
 
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJson([
+
+            'data' =>
+            [
+                'contact_id' => $contact->id
+            ],
+            'links' =>
+            [
+                'self'=> $contact->path(),
+            ]
+
+        ]);
+
     }
 
     /** @test */
@@ -218,6 +239,8 @@ class ContactsTest extends TestCase
         $response = $this->delete('api/contacts/'.$contact->id , ['api_token' => $this->user->api_token]);
 
         $this->assertCount(0 , Contact::all() );
+        
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
     }
     /** @test */
     public function only_the_owner_of_the_contact_can_delete_the_contact()

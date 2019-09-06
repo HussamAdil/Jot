@@ -21,6 +21,7 @@ class ContactsController extends Controller
         $this->authorize('create' , Contact::class); 
 
        $contact = request()->user()->contacts()->create($this->validateData());
+
        return (new ContactResource($contact))->response()->setStatusCode(Response::HTTP_CREATED); 
     }
 
@@ -35,14 +36,19 @@ class ContactsController extends Controller
     {
         $this->authorize('update' , $contact); 
 
-        return $contact->update($this->validateData());
+         $contact->update($this->validateData());
+
+        return (new ContactResource($contact))->response()->setStatusCode(Response::HTTP_OK); 
+
     }
 
     public function destroy(Contact $contact)
     {
         $this->authorize('delete' , $contact); 
 
-        return $contact->delete();
+          $contact->delete();
+
+        return response([] , Response::HTTP_NO_CONTENT);
     }
 
     private function validateData()
