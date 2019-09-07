@@ -12,7 +12,7 @@
                     <div class="relative">
                         <label for="email" class=" uppercase text-blue-500 text-xs font-bold absolute pl-3 pt-2 ">E-mail</label>
 
-                        <div class="col-md-6">
+                        
                             <input id="email" type="email" class="pt-8 w-full rounded p-3 bg-blue-800 outline-none focus:bg-blue-700" name="email" value="{{ old('email') }}"   autocomplete="email" autofocus>
 
                             @error('email')
@@ -20,7 +20,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div>
+                         
                     </div>
 
                     <div class="relative pt-3">
