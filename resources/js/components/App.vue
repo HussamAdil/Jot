@@ -7,7 +7,7 @@
                  <h1>Logo</h1>
            </router-link>
                   <p class="pt-12 text-gray-500 text-xs uppercase font-bold">Create</p>
-                  <router-link to="/" class="flex items-center py-2 hover:text-blue-600">
+                  <router-link to="/contacts/create" class="flex items-center py-2 hover:text-blue-600">
                     <div> + </div> <div class="pl-3"> Add New </div>
                   </router-link>
 
