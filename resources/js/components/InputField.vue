@@ -19,6 +19,14 @@ data:function(){
             value:''
     }
 },
+computed:{
+    hasError:function()
+        {
+            return  this.errors && this.errors[this.name] && this.errors[this.name].length > 0 
+        }
+    
+}
+,
 methods:{
     UpdateField:function()
     {   
@@ -27,14 +35,14 @@ methods:{
     },
     errorMessage:function()
     {
-            if(this.errors && this.errors[this.name] && this.errors[this.name].length > 0 )
+            if(this.hasError)
             {
                 return this.errors[this.name][0]
             }
     },
         clearError:function()
     {
-            if(this.errors && this.errors[this.name] && this.errors[this.name].length > 0 )
+            if(this.hasError)
             {
                 return this.errors[this.name]= null
             }
@@ -42,7 +50,7 @@ methods:{
     errorClassObject:function()
     {
         return {
-            'error-field':this.errors && this.errors[this.name] && this.errors[this.name].length > 0
+            'error-field':this.hasError
         }
     }
 }
