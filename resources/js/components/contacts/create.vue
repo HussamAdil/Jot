@@ -3,13 +3,17 @@
     <form @submit.prevent="submitForm()">
 
      
-      <inputField name="name" label="Contact Name" placeholder="Your Name" @update:field="form.name = $event "></inputField>
+      <inputField name="name" label="Contact Name" 
+      placeholder="Your Name" @update:field="form.name = $event " :errors="errors"></inputField>
 
-      <inputField name="email" label="Contact Email" placeholder="Your Cmail" @update:field="form.email = $event "></inputField>
+      <inputField name="email" label="Contact Email"
+       placeholder="Your Cmail" @update:field="form.email = $event " :errors="errors"></inputField>
 
-      <inputField name="company" label="Contact Company" placeholder="Your Company" @update:field="form.company = $event "></inputField>
+      <inputField name="company" label="Contact Company" 
+       placeholder="Your Company" @update:field="form.company = $event " :errors="errors"></inputField>
 
-      <inputField name="birthday" label="Contact Birthday" placeholder="MM\DD\YYYY" @update:field="form.birthday = $event "></inputField>
+      <inputField name="birthday" label="Contact Birthday" 
+      placeholder="MM\DD\YYYY" @update:field="form.birthday = $event " :errors="errors"></inputField>
 
       <div class="flex justify-end">
           <button class=" py-2 px-4 rounded text-red-700 mr-5 border hover:border-red-700"> cancel</button>
@@ -31,7 +35,8 @@ data:function(){
         'email' : ''  ,
         'company' : ''  ,
         'birthday' : ''  ,
-      } 
+      } ,
+      errors :null
   }
 },
 methods:{
@@ -41,8 +46,8 @@ methods:{
     .then(response => {
 
         })
-    .catch(erros => {
-
+    .catch(errors => {
+      this.errors = errors.response.data.errors
     })
 
   }
