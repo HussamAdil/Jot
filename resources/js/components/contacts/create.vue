@@ -1,11 +1,15 @@
 <template>
   <div>
     <form>
-      
-      <div class="relative pb-5 ">
-        <label for="name" class="absolute pt-2 text-blue-500 uppercase text-xs font-bold"> Contact Name</label>
-        <input id="name" type="text" class="text-gray-900 focus:outline-none focus:border-blue-400  pt-8 w-full border-b pb-2 " >
-      </div>
+
+     
+      <inputField name="name" label="Contact Name" placeholder="Your Name" @update:field="form.name = $event "></inputField>
+
+      <inputField name="email" label="Contact Email" placeholder="Your Cmail" @update:field="form.email = $event "></inputField>
+
+      <inputField name="company" label="Contact Company" placeholder="Your Company" @update:field="form.company = $event "></inputField>
+
+      <inputField name="birthday" label="Contact Birthday" placeholder="MM\DD\YYYY" @update:field="form.birthday = $event "></inputField>
 
       <div class="flex justify-end">
           <button class=" py-2 px-4 rounded text-red-700 mr-5 border hover:border-red-700"> cancel</button>
@@ -17,8 +21,19 @@
 </template>
 
 <script>
+import inputField from '../InputField'
 export default {
-
+components:{inputField},
+data:function(){
+  return {
+      form : {
+        'name' : ''  ,
+        'email' : ''  ,
+        'company' : ''  ,
+        'birthday' : ''  ,
+      } 
+  }
+}
 }
 </script>
 
