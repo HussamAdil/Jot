@@ -12,7 +12,7 @@
 <script>
 export default {
     name:"InputField",
-props:['name' , 'label' , 'placeholder' ,'errors'],
+props:['name' , 'label' , 'placeholder' ,'errors','data'],
 data:function(){
     return {
 
@@ -24,9 +24,16 @@ computed:{
         {
             return  this.errors && this.errors[this.name] && this.errors[this.name].length > 0 
         }
-    
+
 }
 ,
+watch:
+{
+    data:function(val)
+    {
+        this.value = val
+    }
+},
 methods:{
     UpdateField:function()
     {   
@@ -53,7 +60,8 @@ methods:{
             'error-field':this.hasError
         }
     }
-}
+},
+
 }
 </script>
 

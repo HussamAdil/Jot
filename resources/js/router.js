@@ -5,13 +5,15 @@ import VueRouter from 'vue-router'
 import ExampleComponent from './components/ExampleComponent'
 import ContactCreate from  "./components/contacts/create"
 import ContactShow from  "./components/contacts/show"
+import ContactEdit from  "./components/contacts/edit"
 Vue.use(VueRouter)
 
 export default new VueRouter({
     routes:[
         {path:'/' , component:ExampleComponent},
         {path:'/contacts/create' , component:ContactCreate},
-        {path:'/contacts/:id' , component:ContactShow}
+        {path:'/contacts/:id' , component:ContactShow},
+        {path:'/contacts/:id/edit' , component:ContactEdit},
     ],
     mode:'history'
 })

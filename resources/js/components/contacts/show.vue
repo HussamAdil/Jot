@@ -6,11 +6,11 @@
      <div v-else>
               
     <div class="flex justify-between">
-        <div class="text-blue-500">
-          back  
+        <div class="text-black-500 bg-gray-200 py-1 px-2">
+          <a href="#" @click="$router.back()">back</a>  
         </div>
         <div class="relative">
-           <router-link :to="'contact/' + contact.contact_id + '/edit'"  class="rounded  py-2 px-4 text-green-500 border border-green-500">Edit</router-link>
+           <router-link :to="'/contacts/' + contact.contact_id + '/edit'"  class="rounded  py-2 px-4 text-green-500 border border-green-500">Edit</router-link>
            <a href="#" class="rounded  py-2 px-4 text-red-500 border border-red -500"
            @click="modal = ! modal"> Delete</a>
            <div v-if="modal" class="absolute bg-blue-900 text-white rounded z-20 p-8 w-64 right-0 mt-2 mr-6">
