@@ -16,7 +16,7 @@
                     <div> + </div> <div class="pl-3"> Contacts</div>
                   </router-link>
 
-                  <router-link to="/" class="flex items-center py-2 hover:text-blue-600">
+                  <router-link to="/birthdays" class="flex items-center py-2 hover:text-blue-600">
                     <div> + </div> <div class="pl-3"> Birthdays </div>
                   </router-link>
 
