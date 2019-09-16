@@ -44,7 +44,7 @@
 </template>
 
 <script>
- import UserCircle from '../reusable/UserCircel'
+ import UserCircle from '../reusable/UserCircle'
 
 export default {
     components:{UserCircle},

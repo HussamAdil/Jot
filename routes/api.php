@@ -26,6 +26,8 @@ Route::middleware('auth:api')->group(function (){
     Route::delete('/contacts/{contact}' , 'ContactsController@destroy');
 
     Route::get('/birthdays' , 'BirthdaysController@index');
+
+    Route::post('/search' , 'SearchController@index');
 });
 
 

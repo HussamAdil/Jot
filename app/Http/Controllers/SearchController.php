@@ -13,7 +13,7 @@ class SearchController extends Controller
             'searchTerm' => 'required'
         ]);
         
-      $contacts = contact::search(data['searchTerm'])->get();
+      $contacts = contact::search($data['searchTerm'])->get();
 
       return ContactResource::collection($contacts);
     }

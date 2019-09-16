@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     use Searchable;
+    
     protected $guarded = []; 
 
     protected $dates = ['birthday'];

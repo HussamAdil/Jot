@@ -8,7 +8,7 @@
            </router-link>
                   <p class="pt-12 text-gray-500 text-xs uppercase font-bold">Create</p>
                   <router-link to="/contacts/create" class="flex items-center py-2 hover:text-blue-600">
-                    <div> + </div> <div class="pl-3"> Add New </div>
+                    <div> <i class="fas fa-plus-circle"></i> </div> <div class="pl-3"> Add New </div>
                   </router-link>
 
               <p class="pt-12 text-gray-500 text-xs uppercase font-bold">Create</p>
@@ -21,7 +21,7 @@
                   </router-link>
 
                      <p class="pt-12 text-gray-500 text-xs uppercase font-bold">Settings</p>
-                  <router-link to="/" class="flex items-center py-2 hover:text-blue-600">
+                  <router-link to="/logout" class="flex items-center py-2 hover:text-blue-600">
                     <div> + </div> <div class="pl-3"> Logout </div>
                   </router-link>
                    
@@ -30,12 +30,16 @@
       <div class="flex flex-col flex-1 h-screen overflow-y-hidden">
         <div class="h-16 px-6 border-b   border-gray-400 flex items-center justify-between">
           <div>
-            Contacts
+            {{ title }}
           </div>
-          <UserCircle :name="user.name"></UserCircle>
+          <div class="flex items-center">
+            <SearchBar></SearchBar>
+             <UserCircle :name="user.name"></UserCircle>
+
+          </div>
         </div>
         <div class="flex flex-col overflow-y-hidden flex-1">
-        <router-view class=" p-6  overflow-x-hidden ">s</router-view>
+        <router-view class=" p-6  overflow-x-hidden " :key="$route.fullPath"></router-view>
 
         </div>
       </div>
@@ -46,12 +50,14 @@
 </template>
 
 <script >
-    import UserCircle from './reusable/UserCircel'
+    import UserCircle from './reusable/UserCircle'
+    import SearchBar from '../components/reusable/SearchBar'
      export default {
-       components:{UserCircle},
+       components:{UserCircle ,SearchBar },
        name:"App",
        props:['user'],
        created(){
+         this.title = this.$route.meta.title;
          window.axios.interceptors.request.use(
            (config) => {
              if(config.method === 'get')
@@ -67,6 +73,21 @@
              return config
            }
          )
+       },
+       data:function()
+       {
+         return{
+           title:'',
+         }
+       },
+       watch:{
+         $route(to,from)
+         {
+           this.title = to.meta.title
+         },
+         title(){
+           document.title = this.title + ' | SPA'
+         }
        }
      }
 </script>

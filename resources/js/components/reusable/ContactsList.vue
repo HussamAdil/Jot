@@ -6,7 +6,7 @@
           <div v-for="contact in contacts" :key="contact.contact_id">
               
               <router-link class="flex items-center border-b border-gray-400 p-4 hover:bg-gray-200  " :to="'/contacts/' + contact.data.contact_id ">
-              <UserCircel  :name="contact.data.name"></UserCircel>
+              <UserCircle  :name="contact.data.name"></UserCircle>
                  <div class="pl-4">
                  <p class="text-blue-400"> {{ contact.data.name}} </p>  
                 <p class="text-gray-400"> {{ contact.data.company}} </p>  
@@ -17,9 +17,9 @@
   </div>
 </template>
 <script>
-import UserCircel from '../reusable/UserCircel'
+import UserCircle from '../reusable/UserCircle'
 export default {
-components:{UserCircel},
+components:{UserCircle},
 props:['endpoint'],
     mounted(){
         axios.get(this.endpoint)
